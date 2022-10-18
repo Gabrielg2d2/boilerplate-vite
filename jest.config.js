@@ -1,11 +1,15 @@
 module.exports = {
-  transformIgnorePatterns: ['/node_modules/', 'src/vite-env.d.ts'],
-  testMatch: ['**/?(*.unit.)+(spec|test).(js|jsx|ts|tsx)'],
+  transformIgnorePatterns: ['/node_modules/', 'vite-env.d.ts'],
+  testMatch: ['**/?(*.)+(spec|test).(js|jsx|ts|tsx)'],
   preset: 'ts-jest',
   clearMocks: true,
   collectCoverage: true,
   coverageDirectory: 'coverage',
-  collectCoverageFrom: ['src/**/*.(js|jsx|ts|tsx)?', '!src/**/*.d.ts'],
+  collectCoverageFrom: [
+    'src/**/*.(js|jsx|ts|tsx)?',
+    '!src/**/*.d.ts',
+    '!src/main.tsx'
+  ],
   coverageReporters: ['json', 'text', 'lcov', 'clover'],
   coverageProvider: 'v8',
   coverageThreshold: {
@@ -18,12 +22,11 @@ module.exports = {
   },
   maxWorkers: '50%',
   testEnvironment: 'jest-environment-jsdom',
-  setupFilesAfterEnv: ['<rootDir>/.jest/setupTests.js'],
-  moduleNameMapper: {
-    '\\.(css|less|scss|sss|styl)$': 'identity-obj-proxy',
-    '\\.(gif|ttf|eot|svg)$': '<rootDir>/__mocks__/fileMock.js'
-  },
+  setupFilesAfterEnv: ['<rootDir>/.jest/setup.ts'],
   transform: {
-    '^.+\\.(js|jsx|ts|tsx)$': 'babel-jest'
+    '^.+\\.(js|jsx|ts|tsx)$': 'babel-jest',
+    '^.+\\.css$': ['jest-transform-css', { modules: true }],
+    '\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$':
+      '<rootDir>/fileTransformer.js'
   }
 }
